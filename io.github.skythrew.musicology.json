@@ -32,7 +32,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///var/home/mael/Documents/code"
+                    "url" : "https://github.com/Skythrew/musicology.git"
                 }
             ]
         }
