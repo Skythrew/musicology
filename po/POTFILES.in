@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/io.github.skythrew.musicology.desktop.in
+data/io.github.skythrew.musicology.metainfo.xml.in
+data/io.github.skythrew.musicology.gschema.xml
+src/main.py
+src/window.py
+src/window.ui

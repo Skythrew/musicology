@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/skythrew/musicology">
+    <file preprocess="xml-stripblanks">window.ui</file>
+    <file preprocess="xml-stripblanks">views/home.ui</file>
+    <file preprocess="xml-stripblanks">views/home-song-card.ui</file>
+    <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
+  </gresource>
+  <gresource prefix="/io/github/skythrew/musicology/icons/scalable/actions/">
+    <file preprocess="xml-stripblanks" alias="skip-backward-large-symbolic.svg">../data/icons/skip-backward-large-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="skip-forward-large-symbolic.svg">../data/icons/skip-forward-large-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="pause-large-symbolic.svg">../data/icons/pause-large-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="playlist-repeat-symbolic.svg">../data/icons/playlist-repeat-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="panel-left-symbolic.svg">../data/icons/panel-left-symbolic.svg</file>
+  </gresource>
+</gresources>

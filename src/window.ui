@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="MusicologyWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">Musicology</property>
+    <property name="default-width">800</property>
+    <property name="default-height">600</property>
+    <property name="content">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <child type="start">
+              <object class="GtkBox">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">8</property>
+
+                <child>
+                  <object class="GtkButton" id="sidebar_toggle_btn">
+                    <property name="child">
+                      <object class="AdwButtonContent">
+                        <property name="icon-name">panel-left-symbolic</property>
+                        <property name="use-underline">True</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkButton">
+                    <property name="child">
+                      <object class="AdwButtonContent">
+                        <property name="icon-name">edit-find-symbolic</property>
+                        <property name="use-underline">True</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <property name="title-widget">
+              <object class="AdwViewSwitcher">
+                <property name="stack">view_stack</property>
+                <property name="policy">wide</property>
+              </object>
+            </property>
+
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="primary">True</property>
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Main Menu</property>
+                <property name="menu-model">primary_menu</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <property name="content">
+          <object class="GtkOverlay">
+            <child type="overlay">
+                  <object class="AdwOverlaySplitView" id="split_view">
+                <property name="collapsed">true</property>
+                <property name="sidebar">
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
+                    <child>
+                      <object class="GtkListView" id="queue_list_view">
+
+                  </object>
+                    </child>
+                  </object>
+
+                </property>
+                <property name="content">
+                  <object class="AdwViewStack" id="view_stack"/>
+                </property>
+              </object>
+
+            </child>
+            <child>
+              <object class="GtkFixed" id="webview_container"></object>
+            </child>
+          </object>
+        </property>
+        <child type="bottom">
+          <object class="GtkRevealer" id="player">
+            <property name="transition-type">slide-up</property>
+            <property name="child">
+
+              <object class="GtkGrid">
+              <property name="column-homogeneous">true</property>
+              <property name="height-request">50</property>
+              <property name="margin-start">8</property>
+              <property name="margin-bottom">8</property>
+              <property name="margin-end">8</property>
+              <property name="valign">center</property>
+              <property name="orientation">horizontal</property>
+
+              <child>
+                <object class="GtkBox">
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">8</property>
+
+                  <layout>
+                    <property name="column">1</property>
+                    <property name="row">0</property>
+                  </layout>
+
+                  <child>
+                    <object class="GtkPicture" id="player_thumbnail"></object>
+                  </child>
+                  <child>
+                    <object class="GtkBox">
+                      <property name="orientation">vertical</property>
+                      <property name="spacing">8</property>
+
+                      <child>
+                        <object class="GtkScrolledWindow" id="title_scroller">
+                          <property name="vexpand">false</property>
+                          <property name="vscrollbar-policy">never</property>
+                          <property name="hscrollbar-policy">external</property>
+
+                          <child>
+                            <object class="GtkLabel" id="player_title">
+                              <property name="label"></property>
+                              <property name="xalign">0</property>
+                              <property name="halign">start</property>
+                              <property name="single_line_mode">true</property>
+                              <property name="hexpand">true</property>
+                              <property name="wrap">false</property>
+
+                              <style>
+                                <class name="caption-heading"></class>
+                              </style>
+                            </object>
+                          </child>
+                        </object>
+                      </child>
+                      <child>
+                        <object class="GtkLabel" id="player_artist">
+                          <property name="xalign">0</property>
+                          <style>
+                            <class name="caption"></class>
+                          </style>
+                        </object>
+                      </child>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <child>
+                <object class="GtkBox">
+                  <layout>
+                    <property name="column">2</property>
+                    <property name="row">0</property>
+                  </layout>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">8</property>
+                  <property name="valign">center</property>
+                  <property name="halign">center</property>
+
+                  <child>
+                    <object class="GtkButton" id="prev_song_btn">
+                      <property name="child">
+                        <object class="AdwButtonContent">
+                          <property name="icon-name">skip-backward-large-symbolic</property>
+                        </object>
+                      </property>
+                      <style>
+                        <class name="circular"></class>
+                        <class name="flat"></class>
+                      </style>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkButton" id="play_pause_btn">
+                      <property name="child">
+                        <object class="AdwButtonContent" id="play_pause_btn_content">
+                          <property name="icon-name"></property>
+                        </object>
+                      </property>
+                      <style>
+                        <class name="circular"></class>
+                        <class name="flat"></class>
+                      </style>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkButton" id="next_song_btn">
+                      <property name="child">
+                        <object class="AdwButtonContent">
+                          <property name="icon-name">skip-forward-large-symbolic</property>
+                        </object>
+                      </property>
+                      <style>
+                        <class name="circular"></class>
+                        <class name="flat"></class>
+                      </style>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <child>
+                <object class="GtkBox">
+                  <layout>
+                    <property name="column">3</property>
+                    <property name="row">0</property>
+                  </layout>
+                  <property name="valign">center</property>
+                  <property name="halign">end</property>
+                  <property name="orientation">horizontal</property>
+
+                  <child>
+                    <object class="GtkButton" id="player_mode_btn">
+                      <property name="child">
+                        <object class="AdwButtonContent" id="player_mode_icon">
+                          <property name="icon-name">media-playlist-consecutive-symbolic</property>
+                        </object>
+                      </property>
+                      <style>
+                        <class name="circular"></class>
+                        <class name="flat"></class>
+                      </style>
+                    </object>
+                  </child>
+                </object>
+              </child>
+            </object>
+            </property>
+
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="action">app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="action">win.show-help-overlay</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_About Musicology</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>

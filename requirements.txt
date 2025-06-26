@@ -1,0 +1,2 @@
+mpris_server==0.9.6
+ytmusicapi==1.10.3

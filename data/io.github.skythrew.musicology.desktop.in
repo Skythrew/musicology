@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=musicology
+Exec=musicology
+Icon=io.github.skythrew.musicology
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true
