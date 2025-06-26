@@ -1,3 +1,3 @@
-# musicology
+# Musicology
 
-A description of this project.
+A beautiful, feature-rich and performant Youtube Music client for GNOME.
