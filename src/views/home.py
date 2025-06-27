@@ -33,10 +33,11 @@ class HomeSongCard(Gtk.Box):
     artist_label = Gtk.Template.Child('artist')
     thumbnail = Gtk.Template.Child('thumbnail')
 
-    def __init__(self, application, clickable = True, **kwargs):
+    def __init__(self, application, window, clickable = True, **kwargs):
         super().__init__(**kwargs)
 
         self.application = application
+        self.window = window
 
         click_controller = Gtk.GestureClick()
         if clickable:
@@ -58,7 +59,7 @@ class HomeSongCard(Gtk.Box):
     def load_song(self, a1, a2, a3, a4):
         assert self.song != None
 
-        self.application.load_radio_for_song_call(self.song)
+        self.application.player.load_radio_for_song_call(self.song, self.window.update_current_song)
 
     def load_thumbnail(self):
         assert self.song != None
@@ -75,8 +76,9 @@ class Home(Gtk.Overlay):
     spinner = Gtk.Template.Child()
     quick_picks_list = Gtk.Template.Child()
 
-    def __init__(self, application, **kwargs):
+    def __init__(self, application, window, **kwargs):
         self.application = application
+        self.window = window
 
         self.data = None
         self.quick_picks = None
@@ -117,7 +119,7 @@ class Home(Gtk.Overlay):
         self.spinner.set_visible(False)
 
     def on_factory_setup(self, factory, list_item):
-        widget = HomeSongCard(self.application)
+        widget = HomeSongCard(self.application, self.window)
         list_item.set_child(widget)
 
     def on_factory_bind(self, factory, list_item):

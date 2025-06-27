@@ -1,5 +1,6 @@
 subdir('views')
 subdir('data')
+subdir('backend')
 
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
 moduledir = pkgdatadir / 'musicology'

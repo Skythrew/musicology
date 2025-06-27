@@ -63,28 +63,28 @@ class MusicologyWindow(Adw.ApplicationWindow):
         self.application = self.get_application()
 
         self.view_stack.add_titled_with_icon(
-            child=Home(application=self.application),
+            child=Home(application=self.application, window = self),
             name='home',
             title=_('Home'),
             icon_name='go-home-symbolic'
         )
 
-        self.search_window = SearchWindow(self.application)
+        self.search_window = SearchWindow(self.application, self)
         self.view_stack.add(self.search_window)
 
         self.split_view.connect('notify::show-sidebar', self.player_show)
 
         self.sidebar_toggle_btn.connect('clicked', self.toggle_sidebar)
 
-        self.play_pause_btn.connect('clicked', self.get_application().player_toggle)
-        self.prev_song_btn.connect('clicked', self.application.prev_song)
-        self.next_song_btn.connect('clicked', self.application.next_song)
+        self.play_pause_btn.connect('clicked', self.on_play_pause_btn_clicked)
+        self.prev_song_btn.connect('clicked', self.on_prev_btn_clicked)
+        self.next_song_btn.connect('clicked', self.on_next_btn_clicked)
         self.player_mode_btn.connect('clicked', self.application.change_player_mode)
 
         self.search_toggle_btn.connect('clicked', self.search_toggle)
         self.search_entry.connect('activate', self.on_search)
 
-        self.webview_container.put(self.get_application().webview, 100, 100)  # offscreen
+        self.webview_container.put(self.application.webview, 100, 100)  # offscreen
 
         self.player_title_scroll_pos = 0
 
@@ -92,18 +92,22 @@ class MusicologyWindow(Adw.ApplicationWindow):
         factory.connect("setup", self.on_queue_factory_setup)
         factory.connect("bind", self.on_queue_factory_bind)
 
-        self.queue_model = Gtk.SingleSelection.new(self.get_application().queue)
-        self.queue_model.set_can_unselect(False)
-        self.queue_model.set_selected(0)
+        self.application.player.queue_model.connect('notify::n-items', self.on_queue_size_change)
+        self.application.player.queue_model.connect('notify::selected', self.on_queue_song_selected)
 
-        self.queue_model.connect('notify::selected', self.on_queue_song_selected)
-
-        self.queue_list_view.set_model(self.queue_model)
+        self.queue_list_view.set_model(self.application.player.queue_model)
         self.queue_list_view.set_factory(factory)
 
     def on_queue_song_selected(self, item, pspec):
-        self.application.play_queue()
+        self.application.player.play_queue()
+        self.update_current_song(item.get_selected_item())
         self.split_view.set_show_sidebar(False)
+
+    def on_queue_size_change(self, queue, pspec):
+        if queue.get_property('n-items') > 0:
+            self.sidebar_toggle_btn.set_sensitive(True)
+        else:
+            self.sidebar_toggle_btn.set_sensitive(False)
 
     def on_search(self, a1):
         self.view_stack.set_visible_child(self.search_window)
@@ -124,11 +128,20 @@ class MusicologyWindow(Adw.ApplicationWindow):
             self.player_hide()
             self.split_view.set_show_sidebar(True)
 
+    def on_play_pause_btn_clicked(self, btn):
+        self.application.player.toggle()
+
+    def on_next_btn_clicked(self, btn):
+        self.application.player.next_song()
+
+    def on_prev_btn_clicked(self, btn):
+        self.application.player.prev_song()
+
     def player_hide(self):
         self.player.set_reveal_child(False)
 
     def player_show(self, arg1 = None, arg2 = None):
-        if not self.split_view.get_show_sidebar() and len(self.application.queue) != 0:
+        if not self.split_view.get_show_sidebar() and len(self.application.player.queue) != 0:
             self.player.set_reveal_child(True)
 
     def player_toggle(self):
@@ -171,7 +184,7 @@ class MusicologyWindow(Adw.ApplicationWindow):
                 self.player_mode_icon.set_icon_name('media-playlist-repeat-song-symbolic')
 
     def on_queue_factory_setup(self, factory, list_item):
-        widget = HomeSongCard(self.application, clickable = False)
+        widget = HomeSongCard(self.application, window = self, clickable = False)
         list_item.set_child(widget)
 
     def on_queue_factory_bind(self, factory, list_item):

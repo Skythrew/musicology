@@ -41,8 +41,9 @@ class SearchWindow(Gtk.Overlay):
     songs_list_view = Gtk.Template.Child()
     artists_list_view = Gtk.Template.Child()
 
-    def __init__(self, application, **kwargs):
+    def __init__(self, application, window, **kwargs):
         self.application = application
+        self.window = window
 
         self.top_result = None
         self.top_result_widget = None
@@ -107,7 +108,7 @@ class SearchWindow(Gtk.Overlay):
 
         self.top_result = self.__build_song_from_result(result)
 
-        card = HomeSongCard(self.application)
+        card = HomeSongCard(self.application, self.window)
         self.top_result_widget = card
         card.set_song(self.top_result)
         GLib.idle_add(self.top_result_box.append, card)
@@ -154,7 +155,7 @@ class SearchWindow(Gtk.Overlay):
         GLib.idle_add(self.spinner.set_visible, False)
 
     def on_songs_factory_setup(self, factory, list_item):
-        widget = HomeSongCard(self.application)
+        widget = HomeSongCard(self.application, window = self.window)
         list_item.set_child(widget)
 
     def on_songs_factory_bind(self, factory, list_item):
