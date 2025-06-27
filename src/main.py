@@ -115,17 +115,19 @@ class MusicologyApplication(Adw.Application):
             self.queue.append(Song(
                 id = item['videoId'],
                 title = item['title'],
-                artist = Artist(id = item['artists'][0]['id'], name=item['artists'][0]['name']),
+                artist = Artist(id = item['artists'][0]['id'], name=item['artists'][0]['name'], thumbnail_uri = ''),
                 thumbnail_uri = item['thumbnail'][0]['url']
             ))
 
         for song in [Song(
             id = item['videoId'],
             title = item['title'],
-            artist = Artist(id = item['artists'][0]['id'], name=item['artists'][0]['name']),
+            artist = Artist(id = item['artists'][0]['id'], name=item['artists'][0]['name'], thumbnail_uri = ''),
             thumbnail_uri = item['thumbnail'][0]['url']
         ) for item in res['tracks'][1:]]:
             self.queue.append(song)
+
+        GLib.idle_add(self.props.active_window.sidebar_toggle_btn.set_sensitive, True)
 
     def play_queue(self):
         self.play_song(self.queue[self.props.active_window.queue_model.get_selected()])

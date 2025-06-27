@@ -107,7 +107,7 @@ class Home(Gtk.Overlay):
                 id = item['videoId'],
                 title=item['title'],
                 thumbnail_uri=item['thumbnails'][0]['url'],
-                artist=Artist(name=item['artists'][0]['name'], id=item['artists'][0]['id'])
+                artist=Artist(name=item['artists'][0]['name'], id=item['artists'][0]['id'], thumbnail_uri='')
             )
 
             GLib.Thread.new(None, song.load_pixbuf)

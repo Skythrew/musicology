@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="HomeSongCard" parent="GtkBox">
+  <template class="ArtistCard" parent="GtkBox">
     <property name="width-request">300</property>
     <property name="height-request">60</property>
     <property name="orientation">horizontal</property>
@@ -29,22 +29,11 @@
         <property name="margin-end">8</property>
 
         <child>
-          <object class="GtkLabel" id="title">
+          <object class="GtkLabel" id="name">
             <property name="ellipsize">end</property>
             <property name="xalign">0</property>
             <style>
               <class name="caption-heading"></class>
-            </style>
-          </object>
-        </child>
-
-        <child>
-          <object class="GtkLabel" id="artist">
-            <property name="ellipsize">end</property>
-            <property name="xalign">0</property>
-            <style>
-              <class name="caption"></class>
-              <class name="activatable"></class>
             </style>
           </object>
         </child>

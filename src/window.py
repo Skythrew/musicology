@@ -24,6 +24,7 @@ from gi.repository import Gtk, GLib
 
 from .views.home import Home, HomeSongCard
 from .data.constants import WEBVIEW_HTML
+from .views.search import SearchWindow
 
 @Gtk.Template(resource_path='/io/github/skythrew/musicology/window.ui')
 class MusicologyWindow(Adw.ApplicationWindow):
@@ -37,7 +38,6 @@ class MusicologyWindow(Adw.ApplicationWindow):
 
     player = Gtk.Template.Child()
     player_title = Gtk.Template.Child()
-    title_scroller = Gtk.Template.Child()
     player_artist = Gtk.Template.Child()
     player_thumbnail = Gtk.Template.Child()
 
@@ -50,6 +50,10 @@ class MusicologyWindow(Adw.ApplicationWindow):
 
     player_mode_btn = Gtk.Template.Child()
     player_mode_icon = Gtk.Template.Child()
+
+    search_revealer   = Gtk.Template.Child()
+    search_toggle_btn = Gtk.Template.Child()
+    search_entry      = Gtk.Template.Child()
 
     queue_list_view = Gtk.Template.Child()
 
@@ -65,6 +69,9 @@ class MusicologyWindow(Adw.ApplicationWindow):
             icon_name='go-home-symbolic'
         )
 
+        self.search_window = SearchWindow(self.application)
+        self.view_stack.add(self.search_window)
+
         self.split_view.connect('notify::show-sidebar', self.player_show)
 
         self.sidebar_toggle_btn.connect('clicked', self.toggle_sidebar)
@@ -74,10 +81,12 @@ class MusicologyWindow(Adw.ApplicationWindow):
         self.next_song_btn.connect('clicked', self.application.next_song)
         self.player_mode_btn.connect('clicked', self.application.change_player_mode)
 
+        self.search_toggle_btn.connect('clicked', self.search_toggle)
+        self.search_entry.connect('activate', self.on_search)
+
         self.webview_container.put(self.get_application().webview, 100, 100)  # offscreen
 
         self.player_title_scroll_pos = 0
-        GLib.timeout_add(50, self.scroll_player_title)
 
         factory = Gtk.SignalListItemFactory.new()
         factory.connect("setup", self.on_queue_factory_setup)
@@ -96,6 +105,16 @@ class MusicologyWindow(Adw.ApplicationWindow):
         self.application.play_queue()
         self.split_view.set_show_sidebar(False)
 
+    def on_search(self, a1):
+        self.view_stack.set_visible_child(self.search_window)
+        GLib.Thread.new(None, self.search_window.fetch_data, a1.get_text())
+
+    def search_toggle(self, btn):
+        self.search_revealer.set_reveal_child(not self.search_revealer.get_reveal_child())
+
+        if self.search_revealer.get_reveal_child():
+            self.search_entry.grab_focus_without_selecting()
+
     def toggle_sidebar(self, btn):
         sidebar_revealed = self.split_view.get_show_sidebar()
 
@@ -104,17 +123,6 @@ class MusicologyWindow(Adw.ApplicationWindow):
         else:
             self.player_hide()
             self.split_view.set_show_sidebar(True)
-
-    def scroll_player_title(self):
-        hadj = self.title_scroller.get_hadjustment()
-        max_scroll = hadj.get_upper() - hadj.get_page_size()
-
-        self.player_title_scroll_pos += 1
-        if self.player_title_scroll_pos > max_scroll:
-            self.player_title_scroll_pos = 0
-
-        hadj.set_value(self.player_title_scroll_pos)
-        return True
 
     def player_hide(self):
         self.player.set_reveal_child(False)
