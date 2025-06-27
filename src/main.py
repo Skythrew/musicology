@@ -28,7 +28,7 @@ from gi.repository import Gtk, Gio, Adw, WebKit, GLib
 from ytmusicapi import YTMusic
 from .data.constants import WEBVIEW_HTML
 from .data import Song, Artist
-from .backend import Player
+from .backend import Player, PlayerState, PlayerMode
 from .window import MusicologyWindow
 
 
@@ -108,8 +108,8 @@ class MusicologyApplication(Adw.Application):
         GLib.idle_add(self.props.active_window.set_player_time, player_infos.current_time, player_infos.duration)
         GLib.idle_add(self.props.active_window.set_player_playing, player_infos.status)
 
-        if player_infos.status == 0:
-            if self.player.mode == 0 or self.player.mode == 1:
+        if player_infos.status == PlayerState.ENDED:
+            if self.player.mode == PlayerMode.CONSECUTIVE or self.player.mode == PlayerMode.QUEUE_LOOP:
                 self.player.next_song()
             else:
                 self.player.play_queue()

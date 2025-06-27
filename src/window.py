@@ -25,6 +25,7 @@ from gi.repository import Gtk, GLib
 from .views.home import Home, HomeSongCard
 from .data.constants import WEBVIEW_HTML
 from .views.search import SearchWindow
+from .backend import PlayerState, PlayerMode
 
 @Gtk.Template(resource_path='/io/github/skythrew/musicology/window.ui')
 class MusicologyWindow(Adw.ApplicationWindow):
@@ -169,18 +170,18 @@ class MusicologyWindow(Adw.ApplicationWindow):
         self.player_duration_label.set_label(f'{current_minutes}:{str(current_seconds).zfill(2)}/{duration_minutes}:{str(duration_seconds).zfill(2)}')
 
     def set_player_playing(self, status):
-        if status == 1:
+        if status == PlayerState.PLAYING:
             self.play_pause_btn_content.set_icon_name('media-playback-pause-symbolic')
         else:
             self.play_pause_btn_content.set_icon_name('media-playback-start-symbolic')
 
     def update_player_mode(self, mode):
         match mode:
-            case 0:
+            case PlayerMode.CONSECUTIVE:
                 self.player_mode_icon.set_icon_name('media-playlist-consecutive-symbolic')
-            case 1:
+            case PlayerMode.QUEUE_LOOP:
                 self.player_mode_icon.set_icon_name('media-playlist-repeat-symbolic')
-            case 2:
+            case PlayerMode.SONG_LOOP:
                 self.player_mode_icon.set_icon_name('media-playlist-repeat-song-symbolic')
 
     def on_queue_factory_setup(self, factory, list_item):

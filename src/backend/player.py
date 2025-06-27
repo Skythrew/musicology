@@ -8,6 +8,19 @@ class PlayerInfos:
     duration: int
     status: int
 
+class PlayerMode:
+    CONSECUTIVE = 0
+    QUEUE_LOOP = 1
+    SONG_LOOP = 2
+
+class PlayerState:
+    UNSTARTED = -1
+    ENDED = 0
+    PLAYING = 1
+    PAUSED = 2
+    BUFFERING = 3
+    VIDEO_CUED = 5
+
 class Player:
     def __init__(self, webview, YTMusic):
         self.webview = webview
@@ -22,7 +35,7 @@ class Player:
         self.status = None
 
         # PLAYER MODES: 0 (consecutive) / 1 (queue loop) / 2 (song loop)
-        self.mode = 0
+        self.mode = PlayerMode.CONSECUTIVE
 
     def load_radio_for_song_call(self, song, callback):
         GLib.Thread.new(None, self.load_radio_for_song, song, callback)
@@ -66,7 +79,7 @@ class Player:
     def next_song(self):
         if self.queue_model.get_selected() < len(self.queue) - 1:
             self.queue_model.set_selected(self.queue_model.get_selected() + 1)
-        elif self.mode == 1:
+        elif self.mode == PlayerMode.QUEUE_LOOP:
             self.queue_model.set_selected(0)
 
     def update_mode(self):
@@ -104,7 +117,7 @@ class Player:
         callback(PlayerInfos(current_time = current_time, duration = duration, status = status))
 
     def toggle(self):
-        if self.status == 2:
+        if self.status == PlayerState.PAUSED:
             self.webview.evaluate_javascript(
                     'player.playVideo();',
                     -1,
@@ -113,7 +126,7 @@ class Player:
                     callback=None,
                     user_data=None
                 )
-        elif self.status == 1:
+        elif self.status == PlayerState.PLAYING:
             self.webview.evaluate_javascript(
                     'player.pauseVideo();',
                     -1,
