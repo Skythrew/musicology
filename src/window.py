@@ -42,7 +42,7 @@ class MusicologyWindow(Adw.ApplicationWindow):
     player_artist = Gtk.Template.Child()
     player_thumbnail = Gtk.Template.Child()
 
-    # player_duration_label = Gtk.Template.Child('duration_label')
+    player_progress = Gtk.Template.Child()
     play_pause_btn = Gtk.Template.Child()
     play_pause_btn_content = Gtk.Template.Child()
 
@@ -165,14 +165,18 @@ class MusicologyWindow(Adw.ApplicationWindow):
         self.player_thumbnail.set_pixbuf(song.thumbnail_pixbuf)
 
     def set_player_time(self, current: int, duration: int):
-        return
         current_minutes = current // 60
         current_seconds = current % 60
 
         duration_minutes = duration // 60
         duration_seconds = duration % 60
 
-        self.player_duration_label.set_label(f'{current_minutes}:{str(current_seconds).zfill(2)}/{duration_minutes}:{str(duration_seconds).zfill(2)}')
+        self.player_progress.set_min_value(0)
+        self.player_progress.set_max_value(duration)
+
+        self.player_progress.set_value(current)
+
+        # self.player_duration_label.set_label(f'{current_minutes}:{str(current_seconds).zfill(2)}/{duration_minutes}:{str(duration_seconds).zfill(2)}')
 
     def set_player_playing(self, status):
         if status == PlayerState.PLAYING:

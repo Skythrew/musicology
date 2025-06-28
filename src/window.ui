@@ -111,8 +111,20 @@
           <object class="GtkRevealer" id="player">
             <property name="transition-type">slide-up</property>
             <property name="child">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
 
-              <object class="GtkGrid">
+                <child>
+                  <object class="GtkLevelBar" id="player_progress">
+                    <property name="hexpand">true</property>
+                    <property name="min-value">0</property>
+                    <property name="max-value">100</property>
+                    <property name="value">50</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkGrid">
               <property name="column-homogeneous">true</property>
               <property name="height-request">50</property>
               <property name="margin-start">8</property>
@@ -122,6 +134,7 @@
               <property name="valign">center</property>
               <property name="orientation">horizontal</property>
 
+
               <child>
                 <object class="GtkBox">
                   <property name="orientation">horizontal</property>
@@ -129,7 +142,7 @@
 
                   <layout>
                     <property name="column">1</property>
-                    <property name="row">0</property>
+                    <property name="row">1</property>
                   </layout>
 
                   <child>
@@ -172,7 +185,7 @@
                 <object class="GtkBox">
                   <layout>
                     <property name="column">2</property>
-                    <property name="row">0</property>
+                    <property name="row">1</property>
                   </layout>
                   <property name="orientation">horizontal</property>
                   <property name="spacing">8</property>
@@ -225,7 +238,7 @@
                 <object class="GtkBox">
                   <layout>
                     <property name="column">3</property>
-                    <property name="row">0</property>
+                    <property name="row">1</property>
                   </layout>
                   <property name="valign">center</property>
                   <property name="halign">end</property>
@@ -247,6 +260,10 @@
                 </object>
               </child>
             </object>
+                </child>
+              </object>
+
+
             </property>
 
           </object>

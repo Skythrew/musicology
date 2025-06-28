@@ -53,7 +53,7 @@ class MusicologyApplication(Adw.Application):
         self.create_action('about', self.on_about_action)
         self.create_action('preferences', self.on_preferences_action)
 
-        GLib.Thread.new(None, self.update_player_ui)
+        GLib.timeout_add(100, self.update_player_ui)
 
     def do_activate(self):
         """Called when the application is activated.
@@ -105,10 +105,10 @@ class MusicologyApplication(Adw.Application):
         GLib.idle_add(self.props.active_window.update_player_mode, self.player.mode)
 
     def update_player_ui(self):
-        while True:
-            if self.props.active_window:
-                self.player.get_infos(callback = self.on_js_player_ui_return)
-                time.sleep(0.3)
+        if self.props.active_window:
+            self.player.get_infos(callback = self.on_js_player_ui_return)
+
+        return True
 
     def on_js_player_ui_return(self, player_infos):
         GLib.idle_add(self.props.active_window.set_player_time, player_infos.current_time, player_infos.duration)
