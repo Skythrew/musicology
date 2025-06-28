@@ -1,3 +1,5 @@
+APP_ID='io.github.skythrew.musicology'
+
 WEBVIEW_HTML="""
 <!DOCTYPE html>
 <html>

@@ -32,7 +32,10 @@ class Player:
         self.queue_model.set_can_unselect(False)
         self.queue_model.set_selected(0)
 
-        self.status = None
+        self.current_position = 0
+        self.duration = 0
+
+        self.status = PlayerState.UNSTARTED
 
         # PLAYER MODES: 0 (consecutive) / 1 (queue loop) / 2 (song loop)
         self.mode = PlayerMode.CONSECUTIVE
@@ -109,7 +112,9 @@ class Player:
             return
 
         current_time = round(float(res[0]))
+        self.current_position = current_time
         duration = round(float(res[1]))
+        self.duration = duration
         status = int(res[2])
 
         self.status = status
@@ -118,25 +123,76 @@ class Player:
 
     def toggle(self):
         if self.status == PlayerState.PAUSED:
-            self.webview.evaluate_javascript(
-                    'player.playVideo();',
-                    -1,
-                    cancellable=None,
-                    source_uri=None,
-                    callback=None,
-                    user_data=None
-                )
+            self.play()
         elif self.status == PlayerState.PLAYING:
-            self.webview.evaluate_javascript(
-                    'player.pauseVideo();',
-                    -1,
-                    cancellable=None,
-                    source_uri=None,
-                    callback=None,
-                    user_data=None
-                )
+            self.pause()
+
+        self.mpris_adapter.on_playpause()
+
+    def play(self):
+        self.webview.evaluate_javascript(
+            'player.playVideo();',
+            -1,
+            cancellable=None,
+            source_uri=None,
+            callback=None,
+            user_data=None
+        )
+
+        self.status = PlayerState.PLAYING
+
+        self.mpris_adapter.on_playpause()
+
+    def pause(self):
+        self.webview.evaluate_javascript(
+            'player.pauseVideo();',
+            -1,
+            cancellable=None,
+            source_uri=None,
+            callback=None,
+            user_data=None
+        )
+
+        self.status = PlayerState.PAUSED
+
+        self.mpris_adapter.on_playpause()
+
+    def stop(self):
+        self.webview.evaluate_javascript(
+            'player.stopVideo();',
+            -1,
+            cancellable=None,
+            source_uri=None,
+            callback=self.on_js_done,
+            user_data=None
+        )
+
+        self.status = PlayerState.UNSTARTED
 
     def play_song(self, song):
+        self.mpris_server.unpublish()
+        self.mpris_server.publish()
+        self.mpris_adapter.emit_all()
+        self.mpris_adapter.on_playback()
+
+        self.webview.evaluate_javascript(
+            "navigator.mediaSession.setActionHandler('play', null);",
+            -1,
+            cancellable=None,
+            source_uri=None,
+            callback=self.on_js_done,
+            user_data=None
+        )
+
+        self.webview.evaluate_javascript(
+            "navigator.mediaSession.setActionHandler('pause', null);",
+            -1,
+            cancellable=None,
+            source_uri=None,
+            callback=self.on_js_done,
+            user_data=None
+        )
+
         script = f'loadSingleSong("{song.id}")'
         self.webview.evaluate_javascript(
             script,

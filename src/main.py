@@ -29,6 +29,7 @@ from ytmusicapi import YTMusic
 from .data.constants import WEBVIEW_HTML
 from .data import Song, Artist
 from .backend import Player, PlayerState, PlayerMode
+from .backend.mpris import init_mpris
 from .window import MusicologyWindow
 
 
@@ -36,7 +37,7 @@ class MusicologyApplication(Adw.Application):
     """The main application singleton class."""
 
     def __init__(self):
-        super().__init__(application_id='io.github.skythrew.musicology',
+        super().__init__(application_id=None, # We do not set an application_id in order to prevent the WebKit media notification from showing up as it is better managed by MPRIS
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
                          resource_base_path='/io/github/skythrew/musicology')
 
@@ -46,8 +47,9 @@ class MusicologyApplication(Adw.Application):
         self.webview.load_html(WEBVIEW_HTML, "http://localhost")
 
         self.player = Player(self.webview, self.YTMusic)
+        GLib.Thread.new(None, init_mpris, self.player)
 
-        self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
+        self.create_action('quit', lambda *_: self.__on_quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
         self.create_action('preferences', self.on_preferences_action)
 
@@ -63,6 +65,10 @@ class MusicologyApplication(Adw.Application):
         if not win:
             win = MusicologyWindow(application=self)
         win.present()
+
+    def __on_quit(self):
+        self.player.mpris_server.unpublish()
+        self.quit()
 
     def on_about_action(self, *args):
         """Callback for the app.about action."""

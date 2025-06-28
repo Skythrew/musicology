@@ -70,6 +70,8 @@ class MusicologyWindow(Adw.ApplicationWindow):
             icon_name='go-home-symbolic'
         )
 
+        self.connect('close-request', self.__on_close)
+
         self.search_window = SearchWindow(self.application, self)
         self.view_stack.add(self.search_window)
 
@@ -98,6 +100,9 @@ class MusicologyWindow(Adw.ApplicationWindow):
 
         self.queue_list_view.set_model(self.application.player.queue_model)
         self.queue_list_view.set_factory(factory)
+
+    def __on_close(self, _):
+        self.close()
 
     def on_queue_song_selected(self, item, pspec):
         self.application.player.play_queue()
