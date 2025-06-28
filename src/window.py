@@ -56,6 +56,9 @@ class MusicologyWindow(Adw.ApplicationWindow):
     search_toggle_btn = Gtk.Template.Child()
     search_entry      = Gtk.Template.Child()
 
+    current_position_label = Gtk.Template.Child()
+    remaining_time_label = Gtk.Template.Child()
+
     queue_list_view = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
@@ -171,12 +174,16 @@ class MusicologyWindow(Adw.ApplicationWindow):
         duration_minutes = duration // 60
         duration_seconds = duration % 60
 
+        remaining_minutes = (duration - current) // 60
+        remaining_seconds = (duration - current) % 60
+
         self.player_progress.set_min_value(0)
         self.player_progress.set_max_value(duration)
 
         self.player_progress.set_value(current)
 
-        # self.player_duration_label.set_label(f'{current_minutes}:{str(current_seconds).zfill(2)}/{duration_minutes}:{str(duration_seconds).zfill(2)}')
+        self.current_position_label.set_label(f'+ {current_minutes}:{str(current_seconds).zfill(2)}')
+        self.remaining_time_label.set_label(f'- {remaining_minutes}:{str(remaining_seconds).zfill(2)}')
 
     def set_player_playing(self, status):
         if status == PlayerState.PLAYING:

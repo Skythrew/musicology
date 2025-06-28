@@ -230,11 +230,45 @@
                         </child>
 
                         <child>
-                          <object class="GtkLevelBar" id="player_progress">
-                            <property name="hexpand">true</property>
-                            <property name="min-value">0</property>
-                            <property name="max-value">100</property>
-                            <property name="value">50</property>
+                          <object class="GtkBox">
+                            <property name="orientation">horizontal</property>
+                            <property name="spacing">8</property>
+
+                            <child>
+                              <object class="GtkLabel" id="current_position_label">
+                                <property name="xalign">0.5</property>
+                                <property name="width-chars">6</property>
+                                <style>
+                                  <class name="caption"></class>
+                                </style>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="GtkBox">
+                                <property name="valign">center</property>
+
+                                <child>
+                                  <object class="GtkLevelBar" id="player_progress">
+                                    <property name="hexpand">true</property>
+                                    <property name="min-value">0</property>
+                                    <property name="max-value">100</property>
+                                    <property name="width-request">100</property>
+                                    <property name="value">50</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="GtkLabel" id="remaining_time_label">
+                                <property name="xalign">0.5</property>
+                                <property name="width-chars">6</property>
+                                <style>
+                                  <class name="caption"></class>
+                                </style>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
