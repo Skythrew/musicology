@@ -1,2 +1,3 @@
 mpris_server==0.9.6
 ytmusicapi==1.10.3
+pypresence @ git+https://github.com/qwertyquerty/pypresence@4e882c36d0f800c016c15977243ac9a49177095a

@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/io/github/skythrew/musicology">
     <file preprocess="xml-stripblanks">window.ui</file>
+    <file preprocess="xml-stripblanks">views/preferences.ui</file>
     <file preprocess="xml-stripblanks">views/home.ui</file>
     <file preprocess="xml-stripblanks">views/search.ui</file>
     <file preprocess="xml-stripblanks">views/home-song-card.ui</file>

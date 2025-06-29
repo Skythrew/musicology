@@ -6,7 +6,8 @@ moduledir = pkgdatadir / 'musicology' / 'views'
 musicology_sources = [
   '__init__.py',
   'home.py',
-  'search.py'
+  'search.py',
+  'preferences.py'
 ]
 
 install_data(musicology_sources, install_dir: moduledir)

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PreferencesDialog" parent="AdwPreferencesDialog">
+    <property name="search-enabled">false</property>
+    <child>
+      <object class="AdwPreferencesPage">
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Extra Features</property>
+
+            <child>
+              <object class="AdwSwitchRow" id="discord_rpc_row">
+                <property name="title">Discord Rich Presence (RPC)</property>
+                <property name="subtitle">May take some time to start</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

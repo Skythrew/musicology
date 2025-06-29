@@ -1,5 +1,7 @@
 APP_ID='io.github.skythrew.musicology'
 
+DISCORD_RPC_ID='1387060938250653799'
+
 WEBVIEW_HTML="""
 <!DOCTYPE html>
 <html>

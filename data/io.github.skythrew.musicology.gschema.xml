@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="musicology">
 	<schema id="io.github.skythrew.musicology" path="/io/github/skythrew/musicology/">
+	  <key name="discord-rpc" type="b">
+	    <default>false</default>
+	  </key>
 	</schema>
 </schemalist>

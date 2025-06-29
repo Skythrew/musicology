@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from gi.repository import Gio, Gtk, GLib
+from pypresence import ActivityType
 from musicology.data import Song, Artist
+
+import time
 
 @dataclass
 class PlayerInfos:
@@ -22,9 +25,11 @@ class PlayerState:
     VIDEO_CUED = 5
 
 class Player:
-    def __init__(self, webview, YTMusic):
-        self.webview = webview
-        self.YTMusic = YTMusic
+    def __init__(self, application):
+        self.application = application
+        self.webview = application.webview
+        self.YTMusic = application.YTMusic
+        self.discord_status = PlayerState.PAUSED
 
         self.queue = Gio.ListStore.new(Song)
 
@@ -39,6 +44,10 @@ class Player:
 
         # PLAYER MODES: 0 (consecutive) / 1 (queue loop) / 2 (song loop)
         self.mode = PlayerMode.CONSECUTIVE
+
+    @property
+    def discord_rich_presence(self):
+        return self.application.discord_rich_presence
 
     def load_radio_for_song_call(self, song, callback):
         GLib.Thread.new(None, self.load_radio_for_song, song, callback)
@@ -117,6 +126,22 @@ class Player:
         self.duration = duration
         status = int(res[2])
 
+        song_index = self.queue_model.get_selected()
+
+        song = self.queue[song_index] if song_index != 4294967295 else None
+
+        if self.discord_status == PlayerState.UNSTARTED and duration != 0 and self.discord_rich_presence != None and song != None:
+            timestamp = time.time()
+            self.discord_status = PlayerState.PLAYING
+            self.discord_rich_presence.update(
+                activity_type=ActivityType.LISTENING,
+                state=song.artist.name,
+                details=song.title,
+                start=timestamp - current_time,
+                end=timestamp - current_time + duration,
+                large_image=song.thumbnail_uri
+            )
+
         self.status = status
 
         callback(PlayerInfos(current_time = current_time, duration = duration, status = status))
@@ -143,6 +168,8 @@ class Player:
 
         self.mpris_adapter.on_playpause()
 
+        self.discord_status = PlayerState.UNSTARTED
+
     def pause(self):
         self.webview.evaluate_javascript(
             'player.pauseVideo();',
@@ -154,8 +181,22 @@ class Player:
         )
 
         self.status = PlayerState.PAUSED
-
         self.mpris_adapter.on_playpause()
+
+        if self.discord_rich_presence != None:
+            song_index = self.queue_model.get_selected()
+
+            song = self.queue[song_index] if song_index != 4294967295 else None
+
+            self.discord_rich_presence.update(
+                activity_type=ActivityType.LISTENING,
+                state=song.artist.name,
+                details=song.title,
+                start=None,
+                end=None,
+                large_image=song.thumbnail_uri
+            )
+
 
     def stop(self):
         self.webview.evaluate_javascript(
@@ -175,24 +216,6 @@ class Player:
         self.mpris_adapter.emit_all()
         self.mpris_adapter.on_playback()
 
-        self.webview.evaluate_javascript(
-            "navigator.mediaSession.setActionHandler('play', null);",
-            -1,
-            cancellable=None,
-            source_uri=None,
-            callback=self.on_js_done,
-            user_data=None
-        )
-
-        self.webview.evaluate_javascript(
-            "navigator.mediaSession.setActionHandler('pause', null);",
-            -1,
-            cancellable=None,
-            source_uri=None,
-            callback=self.on_js_done,
-            user_data=None
-        )
-
         script = f'loadSingleSong("{song.id}")'
         self.webview.evaluate_javascript(
             script,
@@ -202,6 +225,8 @@ class Player:
             callback=self.on_js_done,
             user_data=None
         )
+
+        self.discord_status = PlayerState.UNSTARTED
 
     def on_js_done(self, webview, result, user_data):
         try:
