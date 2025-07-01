@@ -7,7 +7,7 @@
     <file preprocess="xml-stripblanks">views/search.ui</file>
     <file preprocess="xml-stripblanks">views/home-song-card.ui</file>
     <file preprocess="xml-stripblanks">views/components/artist_card.ui</file>
-    <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
+    <file preprocess="xml-stripblanks">views/help-overlay.ui</file>
   </gresource>
   <gresource prefix="/io/github/skythrew/musicology/icons/scalable/actions/">
     <file preprocess="xml-stripblanks" alias="skip-backward-large-symbolic.svg">../data/icons/skip-backward-large-symbolic.svg</file>

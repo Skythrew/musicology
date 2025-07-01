@@ -7,7 +7,8 @@ musicology_sources = [
   '__init__.py',
   'home.py',
   'search.py',
-  'preferences.py'
+  'preferences.py',
+  'help_overlay.py'
 ]
 
 install_data(musicology_sources, install_dir: moduledir)

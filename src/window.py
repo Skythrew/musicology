@@ -23,6 +23,7 @@ from gi.repository import Adw
 from gi.repository import Gtk, GLib
 
 from .views.home import Home, HomeSongCard
+from .views.help_overlay import HelpOverlay
 from .data.constants import WEBVIEW_HTML
 from .views.search import SearchWindow
 from .backend import PlayerState, PlayerMode
@@ -65,6 +66,8 @@ class MusicologyWindow(Adw.ApplicationWindow):
         super().__init__(**kwargs)
 
         self.application = self.get_application()
+
+        self.set_help_overlay(HelpOverlay())
 
         self.view_stack.add_titled_with_icon(
             child=Home(application=self.application, window = self),

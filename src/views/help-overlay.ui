@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="GtkShortcutsWindow" id="help_overlay">
+  <template class="HelpOverlay" parent="GtkShortcutsWindow">
     <property name="modal">True</property>
     <child>
       <object class="GtkShortcutsSection">
@@ -25,5 +25,5 @@
         </child>
       </object>
     </child>
-  </object>
+  </template>
 </interface>
