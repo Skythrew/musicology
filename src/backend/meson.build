@@ -4,7 +4,6 @@ moduledir = pkgdatadir / 'musicology' / 'backend'
 musicology_sources = [
   '__init__.py',
   'player.py',
-  'mpris.py'
 ]
 
 install_data(musicology_sources, install_dir: moduledir)

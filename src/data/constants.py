@@ -40,7 +40,7 @@ WEBVIEW_HTML="""
       }
 
       function onPlayerReady(event) {
-        event.target.playVideo();
+
       }
 
       function onPlayerStateChange(event) {

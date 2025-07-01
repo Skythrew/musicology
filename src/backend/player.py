@@ -152,8 +152,6 @@ class Player:
         elif self.status == PlayerState.PLAYING:
             self.pause()
 
-        self.mpris_adapter.on_playpause()
-
     def play(self):
         self.webview.evaluate_javascript(
             'player.playVideo();',
@@ -165,8 +163,6 @@ class Player:
         )
 
         self.status = PlayerState.PLAYING
-
-        self.mpris_adapter.on_playpause()
 
         self.discord_status = PlayerState.UNSTARTED
 
@@ -181,7 +177,6 @@ class Player:
         )
 
         self.status = PlayerState.PAUSED
-        self.mpris_adapter.on_playpause()
 
         if self.discord_rich_presence != None:
             song_index = self.queue_model.get_selected()
@@ -211,12 +206,10 @@ class Player:
         self.status = PlayerState.UNSTARTED
 
     def play_song(self, song):
-        self.mpris_server.unpublish()
-        self.mpris_server.publish()
-        self.mpris_adapter.emit_all()
-        self.mpris_adapter.on_playback()
+        script = """
+            loadSingleSong(\"""" + song.id + """\");
+        """
 
-        script = f'loadSingleSong("{song.id}")'
         self.webview.evaluate_javascript(
             script,
             -1,
