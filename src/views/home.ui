@@ -19,7 +19,7 @@
             <child>
               <object class="GtkLabel">
                 <property name="xalign">0</property>
-                <property name="label">Quick Picks</property>
+                <property name="label" translatable="yes">Quick Picks</property>
                 <style>
                   <class name="heading"/>
                 </style>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: musicology\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-01 14:15+0200\n"
+"POT-Creation-Date: 2025-07-01 14:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "GTK;"
 msgstr ""
 
-#: data/io.github.skythrew.musicology.metainfo.xml.in:7 src/main.py:45
+#: data/io.github.skythrew.musicology.metainfo.xml.in:7 src/main.py:44
 #: src/window.ui:6
 msgid "Musicology"
 msgstr ""
@@ -48,7 +48,7 @@ msgid "A caption"
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/main.py:120
+#: src/main.py:119
 msgid "translator-credits"
 msgstr ""
 
@@ -74,4 +74,47 @@ msgstr ""
 
 #: src/window.ui:322
 msgid "_About Musicology"
+msgstr ""
+
+#: src/views/preferences.ui:9
+msgid "Extra Features"
+msgstr ""
+
+#: src/views/preferences.ui:14
+msgid "May take some time to start"
+msgstr ""
+
+#: src/views/home.ui:22
+msgid "Quick Picks"
+msgstr ""
+
+#: src/views/search.ui:18
+msgid "No results found"
+msgstr ""
+
+#: src/views/search.ui:35
+msgid "Top result"
+msgstr ""
+
+#: src/views/search.ui:51
+msgid "Songs"
+msgstr ""
+
+#: src/views/search.ui:72
+msgid "Artists"
+msgstr ""
+
+#: src/views/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: src/views/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: src/views/help-overlay.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
 msgstr ""

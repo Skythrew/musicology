@@ -6,3 +6,7 @@ data/io.github.skythrew.musicology.gschema.xml
 src/main.py
 src/window.py
 src/window.ui
+src/views/preferences.ui
+src/views/home.ui
+src/views/search.ui
+src/views/help-overlay.ui
