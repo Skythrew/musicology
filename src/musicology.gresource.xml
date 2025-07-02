@@ -5,7 +5,7 @@
     <file preprocess="xml-stripblanks">views/preferences.ui</file>
     <file preprocess="xml-stripblanks">views/home.ui</file>
     <file preprocess="xml-stripblanks">views/search.ui</file>
-    <file preprocess="xml-stripblanks">views/home-song-card.ui</file>
+    <file preprocess="xml-stripblanks">views/components/song_card.ui</file>
     <file preprocess="xml-stripblanks">views/components/artist_card.ui</file>
     <file preprocess="xml-stripblanks">views/help-overlay.ui</file>
   </gresource>

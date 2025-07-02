@@ -1,4 +1,4 @@
-# window.py
+# home.py
 #
 # Copyright 2025 Maël
 #
@@ -23,50 +23,9 @@ from gi.repository import Adw
 from gi.repository import Gtk, GLib, Gio
 from gi.repository.GdkPixbuf import Pixbuf
 
+from .components.song_card import SongCard
+
 from musicology.data import Artist, Song
-
-@Gtk.Template(resource_path='/io/github/skythrew/musicology/views/home-song-card.ui')
-class HomeSongCard(Gtk.Box):
-    __gtype_name__ = 'HomeSongCard'
-
-    title_label = Gtk.Template.Child('title')
-    artist_label = Gtk.Template.Child('artist')
-    thumbnail = Gtk.Template.Child('thumbnail')
-
-    def __init__(self, application, window, clickable = True, **kwargs):
-        super().__init__(**kwargs)
-
-        self.application = application
-        self.window = window
-
-        click_controller = Gtk.GestureClick()
-        if clickable:
-            click_controller.connect('released', self.load_song)
-        else:
-            self.remove_css_class('card')
-
-        self.add_controller(click_controller)
-
-        self.song = None
-
-    def set_song(self, song):
-        self.song = song
-
-        GLib.Thread.new(None, self.load_thumbnail)
-        self.title_label.set_label(song.title)
-        self.artist_label.set_label(song.artist.name)
-
-    def load_song(self, a1, a2, a3, a4):
-        assert self.song != None
-
-        self.application.player.load_radio_for_song_call(self.song, self.window.update_current_song)
-
-    def load_thumbnail(self):
-        assert self.song != None
-
-        self.song.load_pixbuf()
-
-        GLib.idle_add(self.thumbnail.set_pixbuf, self.song.thumbnail_pixbuf)
 
 @Gtk.Template(resource_path='/io/github/skythrew/musicology/views/home.ui')
 class Home(Gtk.Overlay):
@@ -119,7 +78,7 @@ class Home(Gtk.Overlay):
         self.spinner.set_visible(False)
 
     def on_factory_setup(self, factory, list_item):
-        widget = HomeSongCard(self.application, self.window)
+        widget = SongCard(self.application, self.window)
         list_item.set_child(widget)
 
     def on_factory_bind(self, factory, list_item):

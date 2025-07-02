@@ -23,8 +23,7 @@ from gi.repository import Adw
 from gi.repository import Gtk, GLib, Gio
 from gi.repository.GdkPixbuf import Pixbuf
 
-from .home import HomeSongCard
-from .components import ArtistCard
+from .components import ArtistCard, SongCard
 from musicology.data import Artist, Song
 
 @Gtk.Template(resource_path='/io/github/skythrew/musicology/views/search.ui')
@@ -108,7 +107,7 @@ class SearchWindow(Gtk.Overlay):
 
         self.top_result = self.__build_song_from_result(result)
 
-        card = HomeSongCard(self.application, self.window)
+        card = SongCard(self.application, self.window)
         self.top_result_widget = card
         card.set_song(self.top_result)
         GLib.idle_add(self.top_result_box.append, card)
@@ -155,7 +154,7 @@ class SearchWindow(Gtk.Overlay):
         GLib.idle_add(self.spinner.set_visible, False)
 
     def on_songs_factory_setup(self, factory, list_item):
-        widget = HomeSongCard(self.application, window = self.window)
+        widget = SongCard(self.application, window = self.window)
         list_item.set_child(widget)
 
     def on_songs_factory_bind(self, factory, list_item):

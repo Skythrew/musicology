@@ -22,7 +22,8 @@ import time
 from gi.repository import Adw
 from gi.repository import Gtk, GLib
 
-from .views.home import Home, HomeSongCard
+from .views.home import Home
+from .views.components import SongCard
 from .views.help_overlay import HelpOverlay
 from .data.constants import WEBVIEW_HTML
 from .views.search import SearchWindow
@@ -204,7 +205,7 @@ class MusicologyWindow(Adw.ApplicationWindow):
                 self.player_mode_icon.set_icon_name('media-playlist-repeat-song-symbolic')
 
     def on_queue_factory_setup(self, factory, list_item):
-        widget = HomeSongCard(self.application, window = self, clickable = False)
+        widget = SongCard(self.application, window = self, clickable = False)
         list_item.set_child(widget)
 
     def on_queue_factory_bind(self, factory, list_item):
